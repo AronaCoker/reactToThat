@@ -6,6 +6,22 @@ import './App.css'
 function App() {
   const [inputText, setInputText] = useState('')
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+
+
+  const toggleTodo = (id) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    );
+    setTodos(updatedTodos);
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'all') return true;
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+  });
 
 
   return (
@@ -32,10 +48,35 @@ function App() {
 
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.text}</li>
+          <li key={todo.id}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo.id)}
+            />
+            <span style={{
+              textDecoration: todo.completed ? 'line-through' : 'none',
+              color: todo.completed ? 'gray' : 'black'
+            }}>
+              {todo.text}
+            </span>
+          </li>
         ))}
       </ul>
+
+
+
+      <div>
+        <button onClick={() => setFilter('all')}>Alle</button>
+        <button onClick={() => setFilter('active')}>Offene</button>
+        <button onClick={() => setFilter('completed')}>Erledigte</button>
+      </div>
+
       <button onClick={() => setTodos([])}>Clear All</button>
+
+
+
+
     </>
   )
 }
