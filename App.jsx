@@ -21,7 +21,16 @@ function App() {
     if (filter === 'all') return true;
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
+    return true;
   });
+
+  const handleDelete = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  };
+  
+
+  const todoCounter = todos.filter((todo) => !todo.completed).length;
 
 
   return (
@@ -46,8 +55,9 @@ function App() {
 
 
 
+
       <ul>
-        {todos.map((todo) => (
+        {filteredTodos.map((todo) => (
           <li key={todo.id}>
             <input
               type="checkbox"
@@ -60,6 +70,8 @@ function App() {
             }}>
               {todo.text}
             </span>
+            <button onClick={() => handleDelete(todo.id)}>x</button>
+
           </li>
         ))}
       </ul>
@@ -76,6 +88,7 @@ function App() {
 
 
 
+<p>Es sind noch {todoCounter} Todos Offen.</p>
 
     </>
   )
